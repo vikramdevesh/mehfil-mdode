@@ -1,0 +1,37 @@
+{
+  "name": "mehfil-mode",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Har Mehfil Ka Apna Music - situation-first Indian music discovery.",
+  "engines": {
+    "node": ">=22.6"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "node --experimental-strip-types --no-warnings --test \"src/**/*.test.ts\"",
+    "validate:data": "node --experimental-strip-types --no-warnings scripts/validate-data.ts",
+    "check": "npm run validate:data && npm run lint && npm run typecheck && npm test && npm run build",
+    "vercel-build": "npm ls next react lucide-react tailwindcss typescript eslint --depth=0; npm run check"
+  },
+  "dependencies": {
+    "lucide-react": "^1.61.0",
+    "next": "^16.4.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^16.4.3",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.9.0"
+  }
+}
