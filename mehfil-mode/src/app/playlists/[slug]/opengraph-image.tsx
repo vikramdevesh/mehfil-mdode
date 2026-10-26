@@ -44,7 +44,7 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 28, opacity: 0.9 }}>
           <span>{siteConfig.tagline}</span>
-          <span>{count > 0 ? `${count} songs · opens on YouTube` : "Opens on YouTube"}</span>
+          <span>{count > 0 ? `${count} songs · plays via YouTube` : "Plays via YouTube"}</span>
         </div>
       </div>
     ),

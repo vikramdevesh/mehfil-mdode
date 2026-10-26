@@ -36,8 +36,8 @@ export function Footer() {
         <div className="container-page flex flex-col gap-3 py-6 text-xs leading-relaxed text-dim md:flex-row md:items-start md:justify-between">
           <p>© {year} {siteConfig.name}. All rights reserved.</p>
           <p className="max-w-2xl md:text-right">
-            {siteConfig.name} is an independent discovery guide. We don&apos;t host, stream or download music —
-            every song opens on YouTube. Song titles and artist names belong to their respective owners. Not
+            {siteConfig.name} is an independent discovery guide. We don&apos;t host or download music —
+            songs play through YouTube&apos;s official player or open on YouTube. Song titles and artist names belong to their respective owners. Not
             affiliated with YouTube, Google or any music label.
           </p>
         </div>

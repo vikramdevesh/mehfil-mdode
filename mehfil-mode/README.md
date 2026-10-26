@@ -2,7 +2,8 @@
 
 A situation-first music discovery site for Indian everyday life: salon radio, chai tapri,
 highway trucks, baraat, sangeet, purane yaar, long drives. Pick a scene, open a playlist,
-tap a song — it opens on YouTube.
+hit play — songs play right on the site through YouTube's official embedded player
+(no login), with a mini player that keeps going while you browse.
 
 - **Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · Lucide icons**
 - Local TypeScript data files, no database, no login, no API keys
@@ -88,19 +89,23 @@ scripts/validate-data.ts
 
 | Data | What the site shows |
 | --- | --- |
-| `youtubeUrl` is a well-formed YouTube video URL | **Open on YouTube** (direct video) |
+| `youtubeUrl` is a well-formed YouTube video URL | **Plays on the site** (mini player + queue) and offers **Open on YouTube** |
+| …and `embeddable: false` | Owner blocks playback on other sites → row opens the video on YouTube, labelled “Plays on YouTube” |
 | no `youtubeUrl` | **Find on YouTube** — a YouTube *search* for title + artist, labelled “Video link pending” |
 | `youtubeUrl` malformed / not YouTube | Search fallback + “Link needs fixing”; `validate:data` fails |
 | title/artist/url still contain template text (“Replace with…”) | Hidden from the site; flagged as placeholder |
 
 A well-formed URL is **not** proof the video exists — always open it yourself before adding.
 
-**Current state:** each of the 15 playlists has 8 starter suggestions (116 unique songs) —
-real, well-known songs listed by title and artist only. **No video links have been added**, so every
-song currently opens a YouTube search. No YouTube playlist URLs are configured, so the
-“Play playlist on YouTube” button is hidden.
+**Current state:** 15 playlists with 31–38 songs each (439 unique songs). 407 songs have a
+YouTube link that was found via YouTube search, scored for official uploads (label / artist /
+“Topic” channels; covers, remakes, live and reprise versions rejected) and confirmed to exist
+with YouTube's oEmbed endpoint — see [`YOUTUBE_MATCHES.md`](YOUTUBE_MATCHES.md) for every match.
+The 32 songs without a confident official match open a YouTube search instead. 5 linked videos
+block embedding and are marked `embeddable: false`. No YouTube playlist URLs are configured,
+so the “Play playlist on YouTube” button is hidden.
 
-### Add songs (target 50–60 per playlist)
+### Add songs (target 30–50 per playlist)
 
 Open e.g. `src/data/playlists/salon-classics.ts` and add entries to `songs`:
 
@@ -114,9 +119,24 @@ Rules:
 - `id`: unique, lowercase-with-dashes. Reusing a song in another playlist? Use the **same id,
   title, artist, language and URL** — the validator enforces it (ready for a future DB).
 - `youtubeUrl`: copy from YouTube → Share. Supported: `watch?v=`, `youtu.be/`, `shorts/`. Omit it if unsure.
+- `embeddable: false`: add this if the video shows “Video unavailable — playback on other websites
+  has been disabled” when embedded. (If you forget, the player skips it automatically and says why.)
 - `position`: 1, 2, 3 … in display order.
 - Run `npm run validate:data` — it shows songs / linked / pending per playlist and how many
-  more each needs to hit 50.
+  more each needs to hit 30.
+
+### The on-site player
+
+`src/components/player/` — `PlayerProvider` (in the root layout, so playback survives page
+navigation) wraps YouTube's official [IFrame Player API](https://developers.google.com/youtube/iframe_api_reference)
+using the privacy-enhanced `youtube-nocookie.com` host. Queue logic is pure and tested in
+`src/lib/player.ts`.
+
+- Play all / Shuffle per playlist, tap any song to start the queue there, next / previous, autoplay next.
+- Songs that fail to play (owner disabled embedding, removed, private) are skipped with a notice.
+- The video stays visible at ≥200 px tall, as YouTube's embed terms require; “minimise” pauses it.
+  Ads and YouTube branding are left untouched. No login or OAuth — none is needed to play public videos.
+- Lock-screen / headphone next & previous via the Media Session API where supported.
 
 ### Add a full YouTube playlist
 

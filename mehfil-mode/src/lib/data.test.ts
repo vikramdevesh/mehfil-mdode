@@ -158,8 +158,13 @@ describe("random discovery", () => {
     assert.equal(pool.playlists.length, EXPECTED_PLAYLIST_COUNT);
     const slugs = new Set(playlistSources.map((p) => p.slug));
     for (let i = 0; i < 50; i++) assert.ok(slugs.has(pickRandom(pool.playlists)!.slug));
-    // No direct links exist yet, so no song may be offered as playable.
-    for (const s of pool.linkedSongs) assert.match(s.href, /watch\?v=/);
+    // Only checked direct links are offered; on-site playback only for embeddable ones.
+    for (const s of pool.linkedSongs) {
+      assert.match(s.href, /watch\?v=/);
+      if (s.videoId) assert.ok(s.href.endsWith(s.videoId));
+    }
+    assert.ok(pool.linkedSongs.some((s) => s.videoId));
+    assert.ok(pool.linkedSongs.some((s) => !s.videoId), "non-embeddable songs stay link-only");
   });
 
   it("pickRandom handles bounds and empty lists", () => {

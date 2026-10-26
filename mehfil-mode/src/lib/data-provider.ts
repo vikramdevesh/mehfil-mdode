@@ -16,6 +16,7 @@ import path from "node:path";
 import { playlistSources } from "../data/playlists/index.ts";
 import { situations } from "../data/situations.ts";
 import { resolvePlaylist } from "./songs.ts";
+import { isPlayable } from "./player.ts";
 import { buildSearchIndex } from "./search.ts";
 
 let cache: ResolvedPlaylist[] | null = null;
@@ -143,7 +144,16 @@ export async function getSearchIndex() {
 export interface RandomPool {
   playlists: { slug: string; title: string; shortTitle: string; accentColor: string }[];
   /** Only songs with a well-formed direct link. Empty until links are added. */
-  linkedSongs: { id: string; title: string; artist?: string; href: string; playlistSlug: string; playlistTitle: string }[];
+  linkedSongs: {
+    id: string;
+    title: string;
+    artist?: string;
+    href: string;
+    /** Set only when the song can play in the on-site player. */
+    videoId?: string;
+    playlistSlug: string;
+    playlistTitle: string;
+  }[];
 }
 
 export async function getRandomPool(): Promise<RandomPool> {
@@ -154,7 +164,15 @@ export async function getRandomPool(): Promise<RandomPool> {
     for (const s of p.songs) {
       if (s.status !== "linked" || seen.has(s.id)) continue;
       seen.add(s.id);
-      linkedSongs.push({ id: s.id, title: s.title, artist: s.artist, href: s.href, playlistSlug: p.slug, playlistTitle: p.title });
+      linkedSongs.push({
+        id: s.id,
+        title: s.title,
+        artist: s.artist,
+        href: s.href,
+        videoId: isPlayable(s) ? s.videoId : undefined,
+        playlistSlug: p.slug,
+        playlistTitle: p.title,
+      });
     }
   }
   return {

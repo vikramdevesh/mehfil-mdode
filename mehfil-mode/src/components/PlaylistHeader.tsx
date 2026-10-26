@@ -2,6 +2,9 @@ import Link from "next/link";
 import { ChevronLeft, Info, ListMusic } from "lucide-react";
 import type { ResolvedPlaylist, Situation } from "@/types/music";
 import { siteConfig } from "@/config/site";
+import { buildQueue } from "@/lib/player";
+import { playlistPath } from "@/lib/url";
+import { PlayAllButtons } from "./PlayAllButtons";
 import { PlaylistArt } from "./PlaylistArt";
 import { ShareButton } from "./ShareButton";
 import { Tag } from "./Tag";
@@ -17,6 +20,8 @@ export function PlaylistHeader({ playlist, situations, shareUrl }: Props) {
   const { stats } = playlist;
   const target = siteConfig.targetSongsPerPlaylist;
   const playlistSituations = situations.filter((s) => playlist.situations.includes(s.id));
+  const tracks = buildQueue(playlist.songs, { label: playlist.title, path: playlistPath(playlist.slug) });
+  const opensOnYouTube = stats.linked - tracks.length;
 
   return (
     <section
@@ -66,6 +71,7 @@ export function PlaylistHeader({ playlist, situations, shareUrl }: Props) {
             </div>
 
             <div className="mt-6 flex flex-wrap items-start gap-3">
+              <PlayAllButtons tracks={tracks} accentColor={playlist.accentColor} />
               {playlist.validPlaylistUrl ? (
                 <a
                   href={playlist.validPlaylistUrl}
@@ -88,11 +94,14 @@ export function PlaylistHeader({ playlist, situations, shareUrl }: Props) {
             <div className="mt-5 flex max-w-2xl gap-2.5 rounded-2xl border border-line bg-white/[0.03] p-3.5 text-sm leading-relaxed text-muted">
               <Info className="mt-0.5 size-4 shrink-0 text-electric-soft" aria-hidden />
               <p>
-                {stats.linked > 0
-                  ? `${stats.linked} of ${stats.total} songs open their YouTube video directly. `
+                {tracks.length > 0
+                  ? `${tracks.length} of ${stats.total} songs play right here through YouTube's own player — no login needed. `
+                  : ""}
+                {opensOnYouTube > 0
+                  ? `${opensOnYouTube} open on YouTube because their owners don't allow playback on other sites. `
                   : ""}
                 {stats.pendingLink > 0
-                  ? `${stats.linked > 0 ? "The rest" : "These songs"} don't have a checked video link yet, so they open a YouTube search instead. `
+                  ? `${stats.pendingLink} don't have a checked video link yet, so they open a YouTube search instead. `
                   : ""}
                 {playlist.validPlaylistUrl
                   ? ""

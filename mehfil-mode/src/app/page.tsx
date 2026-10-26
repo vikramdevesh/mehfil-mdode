@@ -228,7 +228,7 @@ export default async function HomePage() {
             <Lightbulb className="mt-1 size-6 shrink-0 text-amber" aria-hidden />
             <div>
               <h2 className="text-2xl font-extrabold text-fg">Koi gaana miss ho gaya?</h2>
-              <p className="mt-1 text-muted">Every playlist is growing towards 50–60 songs. Tell us what belongs in your mehfil.</p>
+              <p className="mt-1 text-muted">Every playlist is growing towards {siteConfig.targetSongsPerPlaylist.min}–{siteConfig.targetSongsPerPlaylist.max} songs. Tell us what belongs in your mehfil.</p>
             </div>
           </div>
           <Link href="/suggest" className="inline-flex h-11 shrink-0 items-center gap-2 rounded-full bg-fg px-5 text-sm font-bold text-ink hover:bg-white">

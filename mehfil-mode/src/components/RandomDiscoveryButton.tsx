@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowRight, Dices, ExternalLink, RefreshCw } from "lucide-react";
+import { ArrowRight, Dices, ExternalLink, Play, RefreshCw } from "lucide-react";
 import type { RandomPool } from "@/lib/data-provider";
 import { pickRandomExcept } from "@/lib/random";
 import { playlistPath } from "@/lib/url";
+import { usePlayer } from "./player/PlayerProvider";
 
 type Choice =
   | { kind: "playlist"; item: RandomPool["playlists"][number] }
@@ -19,6 +20,7 @@ const key = (p: Choice) => `${p.kind}:${p.kind === "playlist" ? p.item.slug : p.
  */
 export function RandomDiscoveryButton({ pool, className = "" }: { pool: RandomPool; className?: string }) {
   const [pick, setPick] = useState<Choice | null>(null);
+  const player = usePlayer();
 
   const options: Choice[] = [
     ...pool.playlists.map((item) => ({ kind: "playlist" as const, item })),
@@ -71,15 +73,38 @@ export function RandomDiscoveryButton({ pool, className = "" }: { pool: RandomPo
                   <p className="mt-1 truncate font-display text-lg font-bold text-fg">{pick.item.title}</p>
                   {pick.item.artist ? <p className="truncate text-sm text-muted">{pick.item.artist}</p> : null}
                 </div>
-                <a
-                  href={pick.item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[#e5252a] px-4 text-sm font-bold text-white hover:brightness-110"
-                >
-                  Open on YouTube <ExternalLink className="size-4" aria-hidden />
-                  <span className="sr-only">(opens in a new tab)</span>
-                </a>
+                {pick.item.videoId ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const s = pick.item;
+                      if (!s.videoId) return;
+                      player.playQueue([
+                        {
+                          id: s.id,
+                          title: s.title,
+                          artist: s.artist,
+                          videoId: s.videoId,
+                          href: s.href,
+                          context: { label: s.playlistTitle, path: playlistPath(s.playlistSlug) },
+                        },
+                      ]);
+                    }}
+                    className="inline-flex h-10 items-center gap-1.5 rounded-full bg-fg px-4 text-sm font-bold text-ink hover:bg-white"
+                  >
+                    <Play className="size-4" aria-hidden /> Play
+                  </button>
+                ) : (
+                  <a
+                    href={pick.item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[#e5252a] px-4 text-sm font-bold text-white hover:brightness-110"
+                  >
+                    Open on YouTube <ExternalLink className="size-4" aria-hidden />
+                    <span className="sr-only">(opens in a new tab)</span>
+                  </a>
+                )}
               </>
             )}
           </div>

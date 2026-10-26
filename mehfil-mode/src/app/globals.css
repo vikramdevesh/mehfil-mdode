@@ -56,6 +56,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    /* Room for the fixed mini player (set by MiniPlayer while it's open). */
+    padding-bottom: var(--player-h, 0px);
   }
 
   h1,

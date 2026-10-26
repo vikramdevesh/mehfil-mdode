@@ -62,9 +62,14 @@ export default async function PlaylistPage({ params }: { params: Promise<Params>
 
       <div className="container-page mt-10 grid gap-12">
         <section aria-label="Songs">
-          <SongList songs={playlist.songs} accentColor={playlist.accentColor} playlistTitle={playlist.title} />
+          <SongList
+            songs={playlist.songs}
+            accentColor={playlist.accentColor}
+            playlistTitle={playlist.title}
+            playlistHref={playlistPath(playlist.slug)}
+          />
           <p className="mt-4 text-xs leading-relaxed text-dim">
-            Songs open on YouTube in a new tab. {siteConfig.name} doesn&apos;t host or stream any audio.{" "}
+            Songs play through YouTube&apos;s official embedded player, with YouTube&apos;s own ads and branding. {siteConfig.name} doesn&apos;t host, download or re-stream any audio.{" "}
             <Link href="/suggest" className="underline underline-offset-2 hover:text-fg">
               Suggest a song for this playlist
             </Link>

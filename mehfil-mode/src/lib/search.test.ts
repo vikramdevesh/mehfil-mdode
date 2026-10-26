@@ -65,6 +65,6 @@ describe("search", () => {
   it("de-duplicates songs shared between playlists", () => {
     const kala = index.songs.filter((s) => s.id === "kala-chashma");
     assert.equal(kala.length, 1);
-    assert.deepEqual(kala[0].playlists.map((p) => p.slug).sort(), ["baraat-bangers", "party-mode"]);
+    assert.deepEqual(kala[0].playlists.map((p) => p.slug).sort(), ["baraat-bangers", "girls-night-in", "party-mode"]);
   });
 });

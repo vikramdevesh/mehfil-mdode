@@ -5,6 +5,7 @@ import { siteConfig } from "@/config/site";
 import { getBaseUrl } from "@/lib/url";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { PlayerProvider } from "@/components/player/PlayerProvider";
 
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -61,11 +62,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         >
           Skip to content
         </a>
-        <Header />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <PlayerProvider>
+          <Header />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </PlayerProvider>
       </body>
     </html>
   );

@@ -27,8 +27,8 @@ export default async function AboutPage() {
           dholak at a sangeet, the old songs that come out when purane yaar meet again.
         </p>
         <p>
-          {siteConfig.name} organises music around those situations. Pick a scene, open a playlist, and tap any song — it opens on
-          YouTube in a new tab.
+          {siteConfig.name} organises music around those situations. Pick a scene, open a playlist, and hit play — songs play right
+          here through YouTube&apos;s official embedded player, and keep playing while you browse. No login, no app.
         </p>
 
         <h2 className="pt-4 text-2xl font-bold text-fg">How the collection works</h2>
@@ -38,17 +38,21 @@ export default async function AboutPage() {
             <strong className="text-fg">{stats.uniqueSongs} songs</strong> listed so far. Each playlist is being curated by hand towards {min}–{max} songs.
           </li>
           <li>
-            Songs with a checked YouTube video link open that video directly ({stats.linkedSongs} so far). Songs still waiting for a checked link
-            open a YouTube search for the title and artist instead — and are labelled that way.
+            Songs with a checked YouTube video link ({stats.linkedSongs} so far) play on the site, or open on YouTube when the video&apos;s
+            owner doesn&apos;t allow playback elsewhere. Songs still waiting for a checked link open a YouTube search for the title and artist
+            instead — and are labelled that way.
           </li>
           <li>We never invent video links, and we only show a &quot;Play playlist on YouTube&quot; button when a real YouTube playlist has been added.</li>
-          <li>No sign-up, no tracking pixels, no ads.</li>
+          <li>
+            No sign-up and no tracking pixels. Videos load from YouTube&apos;s privacy-enhanced (youtube-nocookie.com) player, and any ads you
+            see are YouTube&apos;s own — we don&apos;t add or remove any.
+          </li>
         </ul>
 
         <h2 className="pt-4 text-2xl font-bold text-fg">Music &amp; rights</h2>
         <p>
-          {siteConfig.name} doesn&apos;t host, stream or download any audio or video. Song titles and artist names are used only to help you
-          find the music on YouTube, and belong to their respective owners. {siteConfig.name} is independent and not affiliated with YouTube,
+          {siteConfig.name} doesn&apos;t host, download or re-stream any audio or video. Playback happens inside YouTube&apos;s own player,
+          so views count for the artists and labels who uploaded them. Song titles and artist names belong to their respective owners. {siteConfig.name} is independent and not affiliated with YouTube,
           Google or any record label.
         </p>
 

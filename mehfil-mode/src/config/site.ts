@@ -12,9 +12,9 @@ export const siteConfig = {
   heroText:
     "Chai ki tapri ho, doston ki mehfil, shaadi ki baraat ya long drive — apna scene chuno aur perfect playlist dhoondo.",
   description:
-    "Mehfil Mode helps you discover music for Indian social situations — chai tapri, salon, highway, shaadi, baraat, long drives and doston ki mehfil. Every song opens on YouTube.",
+    "Mehfil Mode helps you discover music for Indian social situations — chai tapri, salon, highway, shaadi, baraat, long drives and doston ki mehfil. Songs play free through YouTube — no login.",
   /** Target number of songs per playlist once curation is complete. */
-  targetSongsPerPlaylist: { min: 50, max: 60 },
+  targetSongsPerPlaylist: { min: 30, max: 50 },
   locale: "en_IN",
   keywords: [
     "Indian playlists",

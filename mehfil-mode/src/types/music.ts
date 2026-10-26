@@ -68,6 +68,11 @@ export interface Song {
    * Never invent a video id.
    */
   youtubeUrl?: string;
+  /**
+   * Set to false when the video's owner blocks playback on other websites.
+   * The song then opens on YouTube instead of the on-site player.
+   */
+  embeddable?: boolean;
   language: string;
   tags: string[];
   /** 1-based order within the playlist. */
